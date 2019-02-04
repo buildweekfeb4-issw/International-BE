@@ -6,7 +6,8 @@ const { authenticate, generateToken } = require('../auth/authenticate');
 
 module.exports = server => {
   server.post('/api/register', register);
-  server.post('/api/login', login);
+	server.post('/api/login', login);
+	server.get('api/students', students)
 };
 
 function register(req, res) {
@@ -45,3 +46,9 @@ function login(req, res) {
 		})
 		.catch(err => res.status(500).json({errorMessage: err}));
 }
+
+// function students(req, res) {
+//   const requestOptions = {
+//     headers: { accept: 'application/json' },
+// 	};
+// }
