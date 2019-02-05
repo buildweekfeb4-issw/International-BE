@@ -2,14 +2,14 @@ const axios = require("axios");
 const bcrypt = require("bcryptjs");
 const userDb = require("../database/dbConfig.js");
 
-const {generateToken } = require("../auth/authenticate");
+const { generateToken } = require("../auth/authenticate");
 
 module.exports = server => {
   server.post("/api/register", register);
   server.post("/api/login", login);
   server.post("/api/student", student);
-  // server.get('api/students', students)
-  // server.get('api/students/id', students)
+  server.get("/api/students", students);
+  server.get("/api/students/id", studentid);
 };
 
 function register(req, res) {
@@ -74,13 +74,26 @@ function student(req, res) {
   };
 
   userDb("students")
-  .insert(studentInfo)
-  .then(ids => {
-    res.status(201).json(ids);
-  })
-  .catch(err => res.status(500).json({ errorMessage: err }));
+    .insert(studentInfo)
+    .then(ids => {
+      res.status(201).json(ids);
+    })
+    .catch(err => res.status(500).json({ errorMessage: err }));
 }
 // get students list
-// function students(req, res){
+function students(req, res) {
+  userDb("students")
+    .then(name => {
+      res.status(200).json(name);
+    })
+    .catch(err => res.status(500).json(err));
+}
 
-// }
+// get student
+function studentid(req, res) {
+  userDb("students")
+    .then(id => {
+      res.status(200).json(id);
+    })
+    .catch(err => res.status(500).json(err));
+}
