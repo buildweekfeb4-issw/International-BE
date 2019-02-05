@@ -2,12 +2,12 @@ const axios = require("axios");
 const bcrypt = require("bcryptjs");
 const userDb = require("../database/dbConfig.js");
 
-const { authenticate, generateToken } = require("../auth/authenticate");
+const {generateToken } = require("../auth/authenticate");
 
 module.exports = server => {
   server.post("/api/register", register);
   server.post("/api/login", login);
-  server.post("api/students", students);
+  server.post("/api/student", student);
   // server.get('api/students', students)
   // server.get('api/students/id', students)
 };
@@ -49,7 +49,7 @@ function login(req, res) {
     .catch(err => res.status(500).json({ errorMessage: err }));
 }
 
-function students(req, res) {
+function student(req, res) {
   // implement student registration
   const {
     name,
@@ -62,7 +62,7 @@ function students(req, res) {
     contactinfo
   } = req.body;
 
-  const studentsInfo = {
+  const studentInfo = {
     name,
     status,
     age,
@@ -74,9 +74,13 @@ function students(req, res) {
   };
 
   userDb("students")
-    .insert(studentsInfo)
-    .then(ids => {
-      res.status(201).json(ids);
-    })
-    .catch(err => res.status(500).json({ errorMessage: err }));
+  .insert(studentInfo)
+  .then(ids => {
+    res.status(201).json(ids);
+  })
+  .catch(err => res.status(500).json({ errorMessage: err }));
 }
+// get students list
+// function students(req, res){
+
+// }

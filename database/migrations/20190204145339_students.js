@@ -1,21 +1,21 @@
 exports.up = function(knex) {
-    return knex.schema.createTable('students', students => {
-      students.increments();
+    return knex.schema.createTable('students', student => {
+      student.increments();
   
-      students
+      student
         .string('name', 255)
         .notNullable()
         .unique();
-      students.string('status', 255).notNullable();
-      students.string('age', 255).notNullable();
-      students.string('insuranceCardexpires', 255).notNullable();
-      students.string('birthcertificate', 255).notNullable();
-      students.string('specialneeds', 255).notNullable();
-      students.string('represenative', 255).notNullable();
-      students.string('contactinfo', 255).notNullable();
+      student.string('status', 255).notNullable();
+      student.string('age', 255).notNullable();
+      student.string('insuranceCardexpires', 255);
+      student.string('birthcertificate', 255).notNullable();
+      student.string('specialneeds', 255).notNullable();
+      student.string('represenative', 255).notNullable();
+      student.string('contactinfo', 255);
     });
   };
   
   exports.down = function(knex, Promise) {
-    return knex.schema.dropTableIfExists('users');
+    return knex.schema.dropTableIfExists('students');
   };
