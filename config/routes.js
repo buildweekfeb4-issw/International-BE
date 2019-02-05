@@ -9,7 +9,7 @@ module.exports = server => {
   server.post("/api/login", login);
   server.post("/api/student", student);
   server.get("/api/students", students);
-  server.get("/api/students/id", studentid);
+  server.get("/api/students/:id", studentid);
 };
 
 function register(req, res) {
@@ -83,17 +83,24 @@ function student(req, res) {
 // get students list
 function students(req, res) {
   userDb("students")
-    .then(name => {
-      res.status(200).json(name);
+    .then(students => {
+      const studentNames =[]
+      for(let i = 0; i< students.length; i++){
+        studentNames.push (students[i].name)
+      }
+      res.status(200).json(studentNames);
     })
     .catch(err => res.status(500).json(err));
 }
 
 // get student
 function studentid(req, res) {
+const id =req.params.id
   userDb("students")
-    .then(id => {
-      res.status(200).json(id);
-    })
-    .catch(err => res.status(500).json(err));
+  .where({id:id})
+  .then(id => {
+    res.status(200).json(id);
+  })
+  .catch(err => res.status(500).json(err));
 }
+
