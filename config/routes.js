@@ -103,4 +103,16 @@ const id =req.params.id
   })
   .catch(err => res.status(500).json(err));
 }
+\
 
+function studentremove(req,res){
+  const id = req.params.id
+  userDb('studnets').where({id:id}).then(async () => {
+    users = await userDb('students')
+    res.status(200).json(users)
+  })
+}
+
+function studentUpdate(req,res){
+  co
+}
