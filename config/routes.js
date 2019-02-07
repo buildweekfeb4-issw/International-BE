@@ -2,14 +2,15 @@ const axios = require("axios");
 const bcrypt = require("bcryptjs");
 const userDb = require("../database/dbConfig.js");
 
-const { generateToken } = require("../auth/authenticate");
+
+const {authenticate, generateToken } = require("../auth/authenticate");
 
 module.exports = server => {
   server.post("/api/register", register);
   server.post("/api/login", login);
-  server.post("/api/student", student);
-  server.get("/api/students", students);
-  server.get("/api/students/:id", studentid);
+  server.post("/api/student", authenticate,student);
+  server.get("/api/students",  authenticate, students);
+  server.get("/api/students/:id", authenticate, studentid);
 };
 
 function register(req, res) {
