@@ -40,5 +40,7 @@ function generateToken(user) {
 		expiresIn: '30m',
 	};
 
-	return jwt.sign(payload, secret, options);
+  return jwt.sign(payload, secret, options);
+  
 }
+
