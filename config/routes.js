@@ -10,6 +10,8 @@ module.exports = server => {
   server.post("/api/student", student);
   server.get("/api/students", students);
   server.get("/api/students/:id", studentid);
+  server.delete("/api/students/:id", studentRemove)
+  server.put("/api/students/:id", studentUpdate)
 };
 
 function register(req, res) {
@@ -83,12 +85,8 @@ function student(req, res) {
 // get students list
 function students(req, res) {
   userDb("students")
-    .then(students => {
-      const studentNames =[]
-      for(let i = 0; i< students.length; i++){
-        studentNames.push (students[i].name)
-      }
-      res.status(200).json(studentNames);
+    .then(students => {      
+      res.status(200).json(students);
     })
     .catch(err => res.status(500).json(err));
 }
@@ -104,3 +102,40 @@ const id =req.params.id
   .catch(err => res.status(500).json(err));
 }
 
+
+function studentRemove(req,res){
+  const id = req.params.id
+  userDb('students').where({id:id}).del().then(async () => {
+    students = await userDb('students')
+    res.status(200).json(students)
+  })
+}
+
+function studentUpdate(req,res){
+  const id  = req.params.id
+  const {
+    name,
+    status,
+    age,
+    insuranceCardexpires,
+    birthcertificate,
+    specialneeds,
+    represenative,
+    contactinfo
+  } = req.body;
+
+  const studentInfo = {
+    name,
+    status,
+    age,
+    insuranceCardexpires,
+    birthcertificate,
+    specialneeds,
+    represenative,
+    contactinfo
+  };
+  userDb('students').where({id:id}).update(studentInfo).then(async () => {
+    students = await userDb('students')
+    res.status(200).json(students)
+  })
+}
