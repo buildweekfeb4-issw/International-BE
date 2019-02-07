@@ -136,4 +136,8 @@ function studentUpdate(req,res){
     represenative,
     contactinfo
   };
+  userDb('students').where({id:id}).update(studentInfo).then(async () => {
+    users = await userDb('students')
+    res.status(200).json(users)
+  })
 }
