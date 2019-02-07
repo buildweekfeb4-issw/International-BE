@@ -107,12 +107,33 @@ const id =req.params.id
 
 function studentremove(req,res){
   const id = req.params.id
-  userDb('studnets').where({id:id}).then(async () => {
+  userDb('students').where({id:id}).then(async () => {
     users = await userDb('students')
     res.status(200).json(users)
   })
 }
 
 function studentUpdate(req,res){
-  co
+  const id  = req.params.id
+  const {
+    name,
+    status,
+    age,
+    insuranceCardexpires,
+    birthcertificate,
+    specialneeds,
+    represenative,
+    contactinfo
+  } = req.body;
+
+  const studentInfo = {
+    name,
+    status,
+    age,
+    insuranceCardexpires,
+    birthcertificate,
+    specialneeds,
+    represenative,
+    contactinfo
+  };
 }
