@@ -8,9 +8,11 @@ const {authenticate, generateToken } = require("../auth/authenticate");
 module.exports = server => {
   server.post("/api/register", register);
   server.post("/api/login", login);
-  server.post("/api/student", authenticate,student);
-  server.get("/api/students",  authenticate, students);
-  server.get("/api/students/:id", authenticate, studentid);
+  server.post("/api/student",authenticate, student);
+  server.get("/api/students",authenticate, students);
+  server.get("/api/students/:id",authenticate, studentid);
+  server.delete("/api/students/:id",authenticate, studentRemove)
+  server.put("/api/students/:id",authenticate, studentUpdate)
 };
 
 function register(req, res) {
@@ -84,12 +86,8 @@ function student(req, res) {
 // get students list
 function students(req, res) {
   userDb("students")
-    .then(students => {
-      const studentNames =[]
-      for(let i = 0; i< students.length; i++){
-        studentNames.push (students[i].name)
-      }
-      res.status(200).json(studentNames);
+    .then(students => {      
+      res.status(200).json(students);
     })
     .catch(err => res.status(500).json(err));
 }
@@ -105,3 +103,40 @@ const id =req.params.id
   .catch(err => res.status(500).json(err));
 }
 
+
+function studentRemove(req,res){
+  const id = req.params.id
+  userDb('students').where({id:id}).del().then(async () => {
+    students = await userDb('students')
+    res.status(200).json(students)
+  })
+}
+
+function studentUpdate(req,res){
+  const id  = req.params.id
+  const {
+    name,
+    status,
+    age,
+    insuranceCardexpires,
+    birthcertificate,
+    specialneeds,
+    represenative,
+    contactinfo
+  } = req.body;
+
+  const studentInfo = {
+    name,
+    status,
+    age,
+    insuranceCardexpires,
+    birthcertificate,
+    specialneeds,
+    represenative,
+    contactinfo
+  };
+  userDb('students').where({id:id}).update(studentInfo).then(async () => {
+    students = await userDb('students')
+    res.status(200).json(students)
+  })
+}
